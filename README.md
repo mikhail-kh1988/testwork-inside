@@ -23,6 +23,7 @@
    "name":"user",
    "password": "12345"
    }'`
+   
 5. Авторизация пользователя - получение токена
 
 `curl --location --request POST 'http://localhost:9090/auth/' \
