@@ -1,0 +1,39 @@
+version: '3.9'
+services:
+  mysqldb:
+    image: mysql:8.0.30
+    container_name: mysql_db_server
+    restart: always
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: inside
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    networks:
+      backend:
+        ipv4_address: 10.100.0.2
+
+
+  server:
+    container_name: app_server
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    ports:
+      - "9090:9090"
+    depends_on:
+      - mysqldb
+    networks:
+      backend:
+        ipv4_address: 10.100.0.3
+
+networks:
+  backend:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+         - subnet: 10.100.0.0/24
+           gateway: 10.100.0.1
